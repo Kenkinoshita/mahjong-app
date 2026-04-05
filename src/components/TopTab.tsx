@@ -1,18 +1,26 @@
-import { useState, type SyntheticEvent } from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
-import Typography from '@mui/material/Typography';
+import { useLocation, useNavigate } from 'react-router-dom';
+import type { SyntheticEvent } from 'react';
 
-const topTabs = ['総合成績', '成績詳細', 'メンバー', '対局一覧', '出欠表'] as const;
+const topTabs = [
+  { label: '総合成績', path: '/overall-results' },
+  { label: '成績詳細', path: '/result-details' },
+  { label: 'メンバー', path: '/members' },
+  { label: '対局一覧', path: '/matches' },
+  { label: '出欠表', path: '/attendance' },
+] as const;
 
-export type TopTabValue = (typeof topTabs)[number];
+export type TopTabValue = (typeof topTabs)[number]['path'];
 
 export function TopTab() {
-  const [activeTab, setActiveTab] = useState<TopTabValue>(topTabs[0]);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const activeTab = topTabs.find((tab) => tab.path === location.pathname)?.path ?? false;
 
   const handleChange = (_event: SyntheticEvent, nextValue: TopTabValue) => {
-    setActiveTab(nextValue);
+    navigate(nextValue);
   };
 
   return (
@@ -27,14 +35,9 @@ export function TopTab() {
           allowScrollButtonsMobile
         >
           {topTabs.map((tab) => (
-            <Tab key={tab} value={tab} label={tab} />
+            <Tab key={tab.path} value={tab.path} label={tab.label} />
           ))}
         </Tabs>
-      </Box>
-      <Box component="main" sx={{ px: 2, py: 3 }}>
-        <Typography component="h1" variant="h5">
-          {activeTab}
-        </Typography>
       </Box>
     </Box>
   );
