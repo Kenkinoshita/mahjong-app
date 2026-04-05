@@ -19,5 +19,19 @@ export default defineConfig([
       ecmaVersion: 'latest',
       globals: globals.browser,
     },
+    rules: {
+      // 相対パス（./ と ../）を全面禁止
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['./**', '../**'],
+              message: '相対パスは禁止です。エイリアス（@/）を使ってください。',
+            },
+          ],
+        },
+      ],
+    },
   },
 ]);
