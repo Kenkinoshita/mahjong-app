@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useMemo, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TableSortLabel from '@mui/material/TableSortLabel';
 import Typography from '@mui/material/Typography';
 import { useOverallResultsQuery, type OverallResult } from '@/services/stats';
 import { Loading } from '@/components/Loading';
@@ -23,6 +24,36 @@ const columns: Array<{ key: keyof OverallResult; label: string }> = [
 
 function OverallResultsTable() {
   const { data: rows } = useOverallResultsQuery();
+  const [sortKey, setSortKey] = useState<keyof OverallResult>('rank');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+
+  const sortedRows = useMemo(() => {
+    const nextRows = [...rows];
+
+    nextRows.sort((a, b) => {
+      const aValue = a[sortKey];
+      const bValue = b[sortKey];
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+      }
+
+      const compared = String(aValue).localeCompare(String(bValue), 'ja');
+      return sortOrder === 'asc' ? compared : -compared;
+    });
+
+    return nextRows;
+  }, [rows, sortKey, sortOrder]);
+
+  const handleSort = (key: keyof OverallResult) => {
+    if (sortKey === key) {
+      setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+      return;
+    }
+
+    setSortKey(key);
+    setSortOrder('asc');
+  };
 
   if (rows.length === 0) {
     return <Typography color="text.secondary">データがありません</Typography>;
@@ -34,12 +65,20 @@ function OverallResultsTable() {
         <TableHead>
           <TableRow>
             {columns.map((column) => (
-              <TableCell key={column.key}>{column.label}</TableCell>
+              <TableCell key={column.key} sortDirection={sortKey === column.key ? sortOrder : false}>
+                <TableSortLabel
+                  active={sortKey === column.key}
+                  direction={sortKey === column.key ? sortOrder : 'asc'}
+                  onClick={() => handleSort(column.key)}
+                >
+                  {column.label}
+                </TableSortLabel>
+              </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {sortedRows.map((row) => (
             <TableRow key={`${row.rank}-${row.name}`}>
               {columns.map((column) => (
                 <TableCell key={column.key}>{row[column.key]}</TableCell>
