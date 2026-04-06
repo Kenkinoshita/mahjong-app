@@ -1,8 +1,8 @@
-import AttendancePage from '@/pages/AttendancePage';
-import MatchesPage from '@/pages/MatchesPage';
-import MembersPage from '@/pages/MembersPage';
-import OverallResultsPage from '@/pages/OverallResultsPage';
-import ResultDetailsPage from '@/pages/ResultDetailsPage';
+import AttendancePage from '@/pages/AttendancePage/AttendancePage';
+import MatchesPage from '@/pages/MatchesPage/MatchesPage';
+import MembersPage from '@/pages/MembersPage/MembersPage';
+import OverallResultsPage from '@/pages/OverallResultsPage/OverallResultsPage';
+import ResultDetailsPage from '@/pages/ResultDetailsPage/ResultDetailsPage';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 export function AppRouter() {
