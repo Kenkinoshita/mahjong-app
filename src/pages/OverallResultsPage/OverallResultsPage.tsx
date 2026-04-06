@@ -8,8 +8,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Typography from '@mui/material/Typography';
-import { useOverallResultsQuery, type OverallResult } from '@/services/stats';
+import { type OverallResult } from '@/services/stats';
 import { Loading } from '@/components/Loading';
+import { useOverallResults } from '@/pages/OverallResultsPage/useOverallResults';
 
 const columns: Array<{ key: keyof OverallResult; label: string }> = [
   { key: 'rank', label: '順位' },
@@ -23,7 +24,7 @@ const columns: Array<{ key: keyof OverallResult; label: string }> = [
 ];
 
 function OverallResultsTable() {
-  const { data: rows } = useOverallResultsQuery();
+  const { data: rows } = useOverallResults();
   const [sortKey, setSortKey] = useState<keyof OverallResult>('rank');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
