@@ -5,16 +5,22 @@ import OverallResultsPage from '@/pages/OverallResultsPage/OverallResultsPage';
 import ResultDetailsPage from '@/pages/ResultDetailsPage/ResultDetailsPage';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
+const APP_ROUTES = [
+  { path: '/', element: <Navigate to="/overall-results" replace /> },
+  { path: '/overall-results', element: <OverallResultsPage /> },
+  { path: '/result-details', element: <ResultDetailsPage /> },
+  { path: '/members', element: <MembersPage /> },
+  { path: '/matches', element: <MatchesPage /> },
+  { path: '/attendance', element: <AttendancePage /> },
+  { path: '*', element: <Navigate to="/overall-results" replace /> },
+];
+
 export function AppRouter() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/overall-results" replace />} />
-      <Route path="/overall-results" element={<OverallResultsPage />} />
-      <Route path="/result-details" element={<ResultDetailsPage />} />
-      <Route path="/members" element={<MembersPage />} />
-      <Route path="/matches" element={<MatchesPage />} />
-      <Route path="/attendance" element={<AttendancePage />} />
-      <Route path="*" element={<Navigate to="/overall-results" replace />} />
+      {APP_ROUTES.map((route, index) => (
+        <Route key={index} path={route.path} element={route.element} />
+      ))}
     </Routes>
   );
 }
