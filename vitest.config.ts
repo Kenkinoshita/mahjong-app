@@ -32,6 +32,9 @@ export default defineConfig({
     },
   },
   resolve: {
-    alias: [{ find: '@/', replacement: '/src/' }],
+    alias: [
+      { find: '@/', replacement: '/src/' },
+      { find: '@common/', replacement: '/common/src/' },
+    ],
   },
 });

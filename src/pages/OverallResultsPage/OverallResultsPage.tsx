@@ -8,11 +8,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Typography from '@mui/material/Typography';
-import { type OverallResult } from '@/services/stats';
 import { Loading } from '@/components/Loading';
 import { useOverallResults } from '@/pages/OverallResultsPage/useOverallResults';
+import type { OverAllResultResponse } from '@common/schemas/stats/response/OverAllResultResponseSchema';
 
-const columns: Array<{ key: keyof OverallResult; label: string }> = [
+const columns: Array<{ key: keyof OverAllResultResponse[0]; label: string }> = [
   { key: 'rank', label: '順位' },
   { key: 'name', label: '名前' },
   { key: 'point', label: 'ポイント' },
@@ -25,7 +25,7 @@ const columns: Array<{ key: keyof OverallResult; label: string }> = [
 
 function OverallResultsTable() {
   const { data: rows } = useOverallResults();
-  const [sortKey, setSortKey] = useState<keyof OverallResult>('rank');
+  const [sortKey, setSortKey] = useState<keyof OverAllResultResponse[0]>('rank');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const sortedRows = useMemo(() => {
@@ -46,7 +46,7 @@ function OverallResultsTable() {
     return nextRows;
   }, [rows, sortKey, sortOrder]);
 
-  const handleSort = (key: keyof OverallResult) => {
+  const handleSort = (key: keyof OverAllResultResponse[0]) => {
     if (sortKey === key) {
       setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
       return;
