@@ -15,7 +15,10 @@ export default defineConfig(({ mode }) => {
       allowedHosts: true,
     },
     resolve: {
-      alias: [{ find: '@/', replacement: '/src/' }],
+      alias: [
+        { find: '@/', replacement: '/src/' },
+        { find: '@common/', replacement: '/common/src/' },
+      ],
     },
     build: {
       // rollupOptions: {
