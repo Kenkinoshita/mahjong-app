@@ -1,6 +1,7 @@
 import AttendancePage from '@/pages/AttendancePage/AttendancePage';
 import MatchesPage from '@/pages/MatchesPage/MatchesPage';
 import MembersPage from '@/pages/MembersPage/MembersPage';
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
 import OverallResultsPage from '@/pages/OverallResultsPage/OverallResultsPage';
 import ResultDetailsPage from '@/pages/ResultDetailsPage/ResultDetailsPage';
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -12,7 +13,7 @@ const APP_ROUTES = [
   { path: '/members', element: <MembersPage /> },
   { path: '/matches', element: <MatchesPage /> },
   { path: '/attendance', element: <AttendancePage /> },
-  { path: '*', element: <Navigate to="/overall-results" replace /> },
+  { path: '*', element: <NotFoundPage /> },
 ];
 
 export function AppRouter() {
