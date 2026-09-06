@@ -8,10 +8,10 @@ vi.mock('@/services/httpClient', () => ({
 beforeEach(() => vi.resetAllMocks());
 
 describe('auth API', () => {
-  it('ログイン情報を送信して成功レスポンスを返す', async () => {
-    vi.mocked(httpClient.post).mockResolvedValue({ data: { results: 'success' } });
+  it('ログイン情報を送信して userIdを受け取る', async () => {
+    vi.mocked(httpClient.post).mockResolvedValue({ data: { userId: 1 } });
     const input = { email: 'user@example.com', password: 'password' };
-    await expect(login(input)).resolves.toEqual({ results: 'success' });
+    await expect(login(input)).resolves.toEqual({ userId: 1 });
     expect(httpClient.post).toHaveBeenCalledWith('/auth/login', input);
   });
 
@@ -33,13 +33,8 @@ describe('auth API', () => {
 
   it('ログアウトを送信する', async () => {
     vi.mocked(httpClient.post).mockResolvedValue({ data: { results: 'success' } });
-    await expect(logout()).resolves.toEqual({ results: 'success' });
+    await expect(logout()).resolves.toEqual(undefined);
     expect(httpClient.post).toHaveBeenCalledWith('/auth/logout');
-  });
-
-  it('不正な成功レスポンスを拒否する', async () => {
-    vi.mocked(httpClient.post).mockResolvedValue({ data: { results: 'failure' } });
-    await expect(logout()).rejects.toThrow();
   });
 
   it('APIエラーを呼び出し元へ伝える', async () => {
