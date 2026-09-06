@@ -1,6 +1,7 @@
 import AttendancePage from '@/pages/AttendancePage/AttendancePage';
 import { LoginPage } from '@/pages/LoginPage/LoginPage';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { AppLayout } from '@/templates/AppLayout';
 import MatchesPage from '@/pages/MatchesPage/MatchesPage';
 import MembersPage from '@/pages/MembersPage/MembersPage';
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage';
@@ -15,18 +16,22 @@ const APP_ROUTES = [
   { path: '/members', element: <MembersPage />, isProtected: true },
   { path: '/matches', element: <MatchesPage />, isProtected: true },
   { path: '/attendance', element: <AttendancePage />, isProtected: true },
-  { path: '/login', element: <LoginPage />, isProtected: false },
+  { path: '/login', element: <LoginPage />, isProtected: false, showHeader: false },
   { path: '*', element: <NotFoundPage />, isProtected: false },
 ];
 
 export function AppRouter() {
   return (
     <Routes>
-      {APP_ROUTES.map((route, index) => (
+      {APP_ROUTES.map((route) => (
         <Route
-          key={index}
+          key={route.path}
           path={route.path}
-          element={route.isProtected ? <ProtectedRoute>{route.element}</ProtectedRoute> : route.element}
+          element={
+            <AppLayout showHeader={route.showHeader}>
+              {route.isProtected ? <ProtectedRoute>{route.element}</ProtectedRoute> : route.element}
+            </AppLayout>
+          }
         />
       ))}
     </Routes>

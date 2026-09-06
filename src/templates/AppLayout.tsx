@@ -8,10 +8,15 @@ const LayoutMain = styled.main({
   padding: '16px',
 });
 
-export const AppLayout = memo(function AppLayout({ children }: { children: ReactNode }) {
+type AppLayoutProps = {
+  children: ReactNode;
+  showHeader?: boolean;
+};
+
+export const AppLayout = memo(function AppLayout({ children, showHeader = true }: AppLayoutProps) {
   return (
     <div>
-      <AppHeader />
+      {showHeader && <AppHeader />}
       <LayoutMain>{children}</LayoutMain>
       <AppFooter />
     </div>
