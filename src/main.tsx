@@ -23,7 +23,7 @@ createRoot(document.getElementById('root')!).render(
           <AppErrorBoundary>
             <App />
           </AppErrorBoundary>
-        </BrowserRouter>{' '}
+        </BrowserRouter>
       </AppProvider>
     </QueryClientProvider>
   </StrictMode>,
