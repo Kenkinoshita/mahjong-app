@@ -1,8 +1,11 @@
 import { AuthContext, type AuthStatus } from '@/contexts/AuthContext';
 import { fetchCurrentUser } from '@/services/auth';
-import { useMutation } from '@tanstack/react-query';
-import { type ReactNode, useState, useEffect } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { type ReactNode, useEffect, useState } from 'react';
 import { login as loginApi, logout as logoutApi } from '@/services/auth';
+
+const CURRENT_USER_QUERY_KEY = ['current-user'];
+const AUTH_CHECK_INTERVAL_MS = 5 * 60 * 1000;
 
 /**
  * AuthProviderは、アプリケーション全体で認証状態を管理するためのコンテキストプロバイダーです。
@@ -12,6 +15,25 @@ import { login as loginApi, logout as logoutApi } from '@/services/auth';
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [userId, setUserId] = useState<number | null>(null);
   const [status, setStatus] = useState<AuthStatus>('loading');
+
+  const { data, isError } = useQuery({
+    queryKey: CURRENT_USER_QUERY_KEY,
+    queryFn: fetchCurrentUser,
+    retry: false,
+    refetchInterval: AUTH_CHECK_INTERVAL_MS,
+    refetchIntervalInBackground: true,
+  });
+
+  useEffect(() => {
+    if (data) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setUserId(data.userId);
+      setStatus('authenticated');
+    } else if (isError) {
+      setUserId(null);
+      setStatus('unauthenticated');
+    }
+  }, [data, isError]);
 
   const loginMutation = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => loginApi({ email, password }),
@@ -28,28 +50,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setStatus('unauthenticated');
     },
   });
-
-  useEffect(() => {
-    let cancelled = false;
-
-    const fetchUser = async () => {
-      try {
-        const { userId } = await fetchCurrentUser();
-        setUserId(userId);
-        setStatus('authenticated');
-      } catch {
-        setUserId(null);
-        setStatus('unauthenticated');
-      }
-    };
-
-    if (!cancelled) fetchUser();
-
-    return () => {
-      // 本コンポーネントがアンマウントされた場合に、fetchUserの結果を無視するためのフラグを設定します。
-      cancelled = true;
-    };
-  }, []);
 
   const login = async (email: string, password: string) => {
     await loginMutation.mutateAsync({ email, password });

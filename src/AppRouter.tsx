@@ -1,5 +1,5 @@
 import AttendancePage from '@/pages/AttendancePage/AttendancePage';
-import { LoginPage } from '@/components/LoginPage';
+import { LoginPage } from '@/pages/LoginPage/LoginPage';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import MatchesPage from '@/pages/MatchesPage/MatchesPage';
 import MembersPage from '@/pages/MembersPage/MembersPage';

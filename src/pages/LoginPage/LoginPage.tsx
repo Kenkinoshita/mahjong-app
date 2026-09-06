@@ -40,7 +40,8 @@ export function LoginPage() {
     try {
       await login(email, password);
       navigate(from, { replace: true });
-    } catch {
+    } catch (error) {
+      console.error('Login failed:', error);
       setError('root', {
         message: 'ログインに失敗しました。メールアドレスとパスワードを確認してください。',
       });
