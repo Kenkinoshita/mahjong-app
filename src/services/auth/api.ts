@@ -1,28 +1,28 @@
 import { httpClient } from '@/services/httpClient';
-import { LoginRequestSchema, type LoginRequest } from '@common/schemas/auth/request/LoginRequestSchema';
+import { loginRequestSchema, type LoginRequest } from '@common/schemas/auth/request/loginRequestSchema';
+import { registerRequestSchema, type RegisterRequest } from '@common/schemas/auth/request/registerRequestSchema';
 import {
-  CurrentUserResponseSchema,
+  currentUserResponseSchema,
   type CurrentUserResponse,
-} from '@common/schemas/auth/response/CurrentUserResponseSchema';
+} from '@common/schemas/auth/response/currentUserResponseSchema';
 
 export async function fetchCurrentUser(): Promise<CurrentUserResponse> {
   const { data } = await httpClient.get('/auth/me');
-  return CurrentUserResponseSchema.parse(data);
+  return currentUserResponseSchema.parse(data);
 }
 
 export async function login(input: LoginRequest): Promise<CurrentUserResponse> {
-  const body = LoginRequestSchema.parse(input);
+  const body = loginRequestSchema.parse(input);
   const { data } = await httpClient.post('/auth/login', body);
-  return CurrentUserResponseSchema.parse(data);
+  return currentUserResponseSchema.parse(data);
 }
 
 export async function logout(): Promise<void> {
   await httpClient.post('/auth/logout');
 }
 
-type RegisterRequest = { name: string; email: string; password: string };
-
 export async function register(input: RegisterRequest): Promise<CurrentUserResponse> {
-  const { data } = await httpClient.post('/auth/register', input);
-  return CurrentUserResponseSchema.parse(data);
+  const body = registerRequestSchema.parse(input);
+  const { data } = await httpClient.post('/auth/register', body);
+  return currentUserResponseSchema.parse(data);
 }
