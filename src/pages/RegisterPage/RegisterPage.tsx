@@ -1,6 +1,7 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
@@ -8,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { isAxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { registerSchema, type RegisterFormValues } from '@/schemas/registerSchema';
 
@@ -120,6 +121,11 @@ export function RegisterPage() {
           <Button type="submit" variant="contained" size="large" disabled={isRegisterProcessing}>
             {isRegisterProcessing ? '作成中...' : 'アカウントを作成'}
           </Button>
+          <Typography align="center" color="text.secondary">
+            <Link component={RouterLink} to="/login">
+              ログインページに戻る
+            </Link>
+          </Typography>
         </Stack>
       </Paper>
     </Box>
