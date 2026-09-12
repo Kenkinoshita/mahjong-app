@@ -1,51 +1,46 @@
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import { isAxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
-import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/auth/useAuth';
-import { loginSchema, type LoginFormValues } from '@/schemas/loginSchema';
+import { registerSchema, type RegisterFormValues } from '@/schemas/registerSchema';
 
-type LoginLocationState = {
-  from?: {
-    pathname?: string;
-  };
-};
-
-export function LoginPage() {
-  const { isLoginProcessing, login } = useAuth();
+export function RegisterPage() {
+  const { isRegisterProcessing, register } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const {
     control,
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
+      passwordConfirm: '',
     },
   });
 
-  const from = (location.state as LoginLocationState | null)?.from?.pathname ?? '/overall-results';
-
-  const onSubmit = async ({ email, password }: LoginFormValues) => {
+  const onSubmit = async ({ name, email, password }: RegisterFormValues) => {
     try {
-      await login(email, password);
-      navigate(from, { replace: true });
+      await register(name, email, password);
+      navigate('/overall-results', { replace: true });
     } catch (error) {
-      console.error('Login failed:', error);
-      setError('root', {
-        message: 'ログインに失敗しました。メールアドレスとパスワードを確認してください。',
-      });
+      console.error('Register failed:', error);
+      if (isAxiosError(error) && error.response?.status === 409) {
+        setError('root', { message: 'このメールアドレスは既に登録されています。' });
+      } else {
+        setError('root', { message: 'アカウント作成に失敗しました。' });
+      }
     }
   };
 
@@ -55,13 +50,28 @@ export function LoginPage() {
         <Stack component="form" spacing={3} onSubmit={handleSubmit(onSubmit)} noValidate>
           <Box>
             <Typography component="h1" variant="h4" gutterBottom>
-              ログイン
+              アカウント作成
             </Typography>
             <Typography color="text.secondary">アカウント情報を入力してください。</Typography>
           </Box>
 
           {errors.root?.message && <Alert severity="error">{errors.root.message}</Alert>}
 
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                type="text"
+                label="名前"
+                autoComplete="name"
+                error={Boolean(errors.name)}
+                helperText={errors.name?.message}
+              />
+            )}
+          />
           <Controller
             name="email"
             control={control}
@@ -86,21 +96,30 @@ export function LoginPage() {
                 fullWidth
                 type="password"
                 label="パスワード"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 error={Boolean(errors.password)}
                 helperText={errors.password?.message}
               />
             )}
           />
-          <Button type="submit" variant="contained" size="large" disabled={isLoginProcessing}>
-            {isLoginProcessing ? 'ログイン中...' : 'ログイン'}
+          <Controller
+            name="passwordConfirm"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                fullWidth
+                type="password"
+                label="パスワード（確認）"
+                autoComplete="new-password"
+                error={Boolean(errors.passwordConfirm)}
+                helperText={errors.passwordConfirm?.message}
+              />
+            )}
+          />
+          <Button type="submit" variant="contained" size="large" disabled={isRegisterProcessing}>
+            {isRegisterProcessing ? '作成中...' : 'アカウントを作成'}
           </Button>
-          <Typography align="center" color="text.secondary">
-            アカウントをお持ちでない方は{' '}
-            <Link component={RouterLink} to="/register">
-              新規登録
-            </Link>
-          </Typography>
         </Stack>
       </Paper>
     </Box>

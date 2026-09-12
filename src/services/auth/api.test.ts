@@ -1,4 +1,4 @@
-import { fetchCurrentUser, login, logout } from '@/services/auth/api';
+import { fetchCurrentUser, login, logout, register } from '@/services/auth/api';
 import { httpClient } from '@/services/httpClient';
 
 vi.mock('@/services/httpClient', () => ({
@@ -31,6 +31,19 @@ describe('auth API', () => {
     await expect(fetchCurrentUser()).rejects.toThrow();
   });
 
+  it('アカウント作成情報を送信して userIdを受け取る', async () => {
+    vi.mocked(httpClient.post).mockResolvedValue({ data: { userId: 1 } });
+    const input = { name: 'テスト太郎', email: 'user@example.com', password: 'password123' };
+    await expect(register(input)).resolves.toEqual({ userId: 1 });
+    expect(httpClient.post).toHaveBeenCalledWith('/auth/register', input);
+  });
+
+  it('不正なアカウント作成レスポンスを拒否する', async () => {
+    vi.mocked(httpClient.post).mockResolvedValue({ data: { userId: null } });
+    const input = { name: 'テスト太郎', email: 'user@example.com', password: 'password123' };
+    await expect(register(input)).rejects.toThrow();
+  });
+
   it('ログアウトを送信する', async () => {
     vi.mocked(httpClient.post).mockResolvedValue({ data: { results: 'success' } });
     await expect(logout()).resolves.toEqual(undefined);
@@ -42,6 +55,9 @@ describe('auth API', () => {
     vi.mocked(httpClient.post).mockRejectedValue(error);
     await expect(login({ email: 'user@example.com', password: 'password' })).rejects.toBe(error);
     await expect(logout()).rejects.toBe(error);
+    await expect(register({ name: 'テスト太郎', email: 'user@example.com', password: 'password123' })).rejects.toBe(
+      error,
+    );
     vi.mocked(httpClient.get).mockRejectedValue(error);
     await expect(fetchCurrentUser()).rejects.toBe(error);
   });

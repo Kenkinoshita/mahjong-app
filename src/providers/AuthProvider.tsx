@@ -2,7 +2,7 @@ import { AuthContext, type AuthStatus } from '@/contexts/AuthContext';
 import { fetchCurrentUser } from '@/services/auth';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { type ReactNode, useEffect, useState } from 'react';
-import { login as loginApi, logout as logoutApi } from '@/services/auth';
+import { login as loginApi, logout as logoutApi, register as registerApi } from '@/services/auth';
 
 const CURRENT_USER_QUERY_KEY = ['current-user'];
 const AUTH_CHECK_INTERVAL_MS = 5 * 60 * 1000;
@@ -51,12 +51,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  const registerMutation = useMutation({
+    mutationFn: ({ name, email, password }: { name: string; email: string; password: string }) =>
+      registerApi({ name, email, password }),
+    onSuccess: ({ userId }) => {
+      setUserId(userId);
+      setStatus('authenticated');
+    },
+  });
+
   const login = async (email: string, password: string) => {
     await loginMutation.mutateAsync({ email, password });
   };
 
   const logout = async () => {
     await logoutMutation.mutateAsync();
+  };
+
+  const register = async (name: string, email: string, password: string) => {
+    await registerMutation.mutateAsync({ name, email, password });
   };
 
   return (
@@ -66,8 +79,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         status: status,
         isLoginProcessing: loginMutation.isPending,
         isLogoutProcessing: logoutMutation.isPending,
+        isRegisterProcessing: registerMutation.isPending,
         login,
         logout,
+        register,
       }}
     >
       {children}

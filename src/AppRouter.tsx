@@ -1,5 +1,6 @@
 import AttendancePage from '@/pages/AttendancePage/AttendancePage';
 import { LoginPage } from '@/pages/LoginPage/LoginPage';
+import { RegisterPage } from '@/pages/RegisterPage/RegisterPage';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { AppLayout } from '@/templates/AppLayout';
 import MatchesPage from '@/pages/MatchesPage/MatchesPage';
@@ -17,6 +18,7 @@ const APP_ROUTES = [
   { path: '/matches', element: <MatchesPage />, isProtected: true },
   { path: '/attendance', element: <AttendancePage />, isProtected: true },
   { path: '/login', element: <LoginPage />, isProtected: false, showHeader: false },
+  { path: '/register', element: <RegisterPage />, isProtected: false, showHeader: false },
   { path: '*', element: <NotFoundPage />, isProtected: false },
 ];
 

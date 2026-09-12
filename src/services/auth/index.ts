@@ -1,1 +1,1 @@
-export { fetchCurrentUser, login, logout } from '@/services/auth/api';
+export { fetchCurrentUser, login, logout, register } from '@/services/auth/api';

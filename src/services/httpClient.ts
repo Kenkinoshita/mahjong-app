@@ -8,7 +8,7 @@ export const httpClient = axios.create({
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && window.location.pathname !== '/login') {
+    if (error.response?.status === 401 && !['/login', '/register'].includes(window.location.pathname)) {
       window.location.replace('/login');
     }
 

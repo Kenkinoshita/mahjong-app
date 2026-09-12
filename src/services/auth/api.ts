@@ -19,3 +19,10 @@ export async function login(input: LoginRequest): Promise<CurrentUserResponse> {
 export async function logout(): Promise<void> {
   await httpClient.post('/auth/logout');
 }
+
+type RegisterRequest = { name: string; email: string; password: string };
+
+export async function register(input: RegisterRequest): Promise<CurrentUserResponse> {
+  const { data } = await httpClient.post('/auth/register', input);
+  return CurrentUserResponseSchema.parse(data);
+}
