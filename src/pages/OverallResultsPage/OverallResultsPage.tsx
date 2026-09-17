@@ -1,5 +1,5 @@
+import { PageCard } from '@/components/PageCard';
 import { Suspense, useMemo, useState } from 'react';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -57,11 +57,15 @@ function OverallResultsTable() {
   };
 
   if (rows.length === 0) {
-    return <Typography color="text.secondary">データがありません</Typography>;
+    return (
+      <Typography color="text.secondary" sx={{ textAlign: 'center', py: 5 }}>
+        データがありません
+      </Typography>
+    );
   }
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer>
       <Table aria-label="総合成績テーブル">
         <TableHead>
           <TableRow>
@@ -80,9 +84,21 @@ function OverallResultsTable() {
         </TableHead>
         <TableBody>
           {sortedRows.map((row) => (
-            <TableRow key={`${row.rank}-${row.name}`}>
+            <TableRow hover key={`${row.rank}-${row.name}`}>
               {columns.map((column) => (
-                <TableCell key={column.key}>{row[column.key]}</TableCell>
+                <TableCell
+                  key={column.key}
+                  sx={
+                    column.key === 'point'
+                      ? {
+                          color: row.point < 0 ? 'error.main' : 'primary.main',
+                          fontWeight: 700,
+                        }
+                      : undefined
+                  }
+                >
+                  {row[column.key]}
+                </TableCell>
               ))}
             </TableRow>
           ))}
@@ -94,14 +110,11 @@ function OverallResultsTable() {
 
 function OverallResultsPage() {
   return (
-    <>
-      <Typography component="h1" variant="h5" gutterBottom>
-        総合成績
-      </Typography>
+    <PageCard title="総合成績">
       <Suspense fallback={<Loading />}>
         <OverallResultsTable />
       </Suspense>
-    </>
+    </PageCard>
   );
 }
 

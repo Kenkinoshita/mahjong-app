@@ -1,3 +1,6 @@
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from '@/theme/theme';
 import { AuthProvider } from '@/providers/AuthProvider';
 import type { ReactNode } from 'react';
 
@@ -6,5 +9,10 @@ import type { ReactNode } from 'react';
  * 現在はAuthProviderのみを提供していますが、将来的に他のコンテキストプロバイダーも追加することができます。
  */
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  return <AuthProvider>{children}</AuthProvider>;
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AuthProvider>{children}</AuthProvider>
+    </ThemeProvider>
+  );
 };

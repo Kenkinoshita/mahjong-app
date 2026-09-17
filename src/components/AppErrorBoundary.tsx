@@ -42,7 +42,7 @@ class AppErrorBoundaryRoot extends Component<AppErrorBoundaryProps, AppErrorBoun
     if (error) {
       return (
         <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
-          <AppLayout>
+          <AppLayout showHeader={false}>
             <ErrorPage error={error} onReset={this.handleReset} />
           </AppLayout>
         </Box>

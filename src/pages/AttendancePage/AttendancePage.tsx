@@ -1,13 +1,11 @@
+import { PageCard } from '@/components/PageCard';
 import Typography from '@mui/material/Typography';
 
 function AttendancePage() {
   return (
-    <>
-      <Typography component="h1" variant="h5" gutterBottom>
-        出欠表
-      </Typography>
+    <PageCard title="出欠表">
       <Typography color="text.secondary">出欠表ページ（ダミー）です。</Typography>
-    </>
+    </PageCard>
   );
 }
 

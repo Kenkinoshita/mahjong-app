@@ -1,13 +1,11 @@
+import { PageCard } from '@/components/PageCard';
 import Typography from '@mui/material/Typography';
 
 function MembersPage() {
   return (
-    <>
-      <Typography component="h1" variant="h5" gutterBottom>
-        メンバー
-      </Typography>
+    <PageCard title="メンバー">
       <Typography color="text.secondary">メンバーページ（ダミー）です。</Typography>
-    </>
+    </PageCard>
   );
 }
 

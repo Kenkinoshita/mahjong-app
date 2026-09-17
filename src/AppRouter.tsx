@@ -19,7 +19,7 @@ const APP_ROUTES = [
   { path: '/attendance', element: <AttendancePage />, isProtected: true },
   { path: '/login', element: <LoginPage />, isProtected: false, showHeader: false },
   { path: '/register', element: <RegisterPage />, isProtected: false, showHeader: false },
-  { path: '*', element: <NotFoundPage />, isProtected: false },
+  { path: '*', element: <NotFoundPage />, isProtected: false, showHeader: false },
 ];
 
 export function AppRouter() {

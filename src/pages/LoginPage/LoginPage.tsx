@@ -7,9 +7,11 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isAxiosError } from 'axios';
 import { Controller, useForm } from 'react-hook-form';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/auth/useAuth';
+import { useThrowError } from '@/hooks/useThrowError';
 import { loginSchema, type LoginFormValues } from '@/schemas/loginSchema';
 
 type LoginLocationState = {
@@ -20,6 +22,7 @@ type LoginLocationState = {
 
 export function LoginPage() {
   const { isLoginProcessing, login } = useAuth();
+  const { throwError } = useThrowError();
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -43,9 +46,13 @@ export function LoginPage() {
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Login failed:', error);
-      setError('root', {
-        message: 'ログインに失敗しました。メールアドレスとパスワードを確認してください。',
-      });
+      if (isAxiosError(error) && error.response?.status === 401) {
+        setError('root', {
+          message: 'ログインに失敗しました。メールアドレスとパスワードを確認してください。',
+        });
+      } else {
+        throwError(error);
+      }
     }
   };
 

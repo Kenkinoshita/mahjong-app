@@ -24,21 +24,37 @@ export function TopTab() {
   };
 
   return (
-    <Box>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'background.paper', px: 2, pt: 1 }}>
-        <Tabs
-          value={activeTab}
-          onChange={handleChange}
-          aria-label="トップタブ"
-          variant="scrollable"
-          scrollButtons="auto"
-          allowScrollButtonsMobile
-        >
-          {topTabs.map((tab) => (
-            <Tab key={tab.path} value={tab.path} label={tab.label} />
-          ))}
-        </Tabs>
-      </Box>
+    <Box component="nav" aria-label="メインメニュー" sx={{ mb: 3 }}>
+      <Tabs
+        value={activeTab}
+        onChange={handleChange}
+        aria-label="トップタブ"
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile
+        sx={{
+          minHeight: 44,
+          '& .MuiTabs-indicator': { display: 'none' },
+          '& .MuiTabs-list': { gap: 1 },
+          '& .MuiTab-root': {
+            minHeight: 44,
+            minWidth: 'auto',
+            px: 2,
+            py: 1.25,
+            border: 1,
+            borderColor: 'divider',
+            borderRadius: 1,
+            bgcolor: 'background.paper',
+            color: 'text.primary',
+            '&:hover': { borderColor: 'primary.main' },
+            '&.Mui-selected': { bgcolor: 'primary.main', color: 'common.white', borderColor: 'primary.main' },
+          },
+        }}
+      >
+        {topTabs.map((tab) => (
+          <Tab key={tab.path} value={tab.path} label={tab.label} />
+        ))}
+      </Tabs>
     </Box>
   );
 }
