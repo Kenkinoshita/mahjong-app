@@ -96,7 +96,7 @@ export function LoginPage() {
             {isLoginProcessing ? 'ログイン中...' : 'ログイン'}
           </Button>
           <Typography align="center" color="text.secondary">
-            アカウントをお持ちでない方は{' '}
+            アカウントをお持ちでない方は
             <Link component={RouterLink} to="/register">
               新規登録
             </Link>
