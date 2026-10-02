@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Typography from '@mui/material/Typography';
 import { Loading } from '@/components/Loading';
-import { useOverallResults } from '@/pages/OverallResultsPage/useOverallResults';
+import { useOverallResults } from '@/hooks/stats/useOverallResults';
 import type { OverAllResultResponse } from '@common/schemas/stats/response/overAllResultResponseSchema';
 
 const columns: Array<{ key: keyof OverAllResultResponse[0]; label: string }> = [

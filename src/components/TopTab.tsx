@@ -7,7 +7,7 @@ import type { SyntheticEvent } from 'react';
 const topTabs = [
   { label: '総合成績', path: '/overall-results' },
   { label: '成績詳細', path: '/result-details' },
-  { label: 'メンバー', path: '/members' },
+  { label: '部員', path: '/members' },
   { label: '対局一覧', path: '/matches' },
   { label: '出欠表', path: '/attendance' },
 ] as const;
