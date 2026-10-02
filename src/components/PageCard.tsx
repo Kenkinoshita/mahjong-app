@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import type { ReactNode } from 'react';
 
 type PageCardProps = {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
 };
 
