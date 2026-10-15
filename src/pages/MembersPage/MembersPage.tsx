@@ -1,3 +1,4 @@
+import { RegisterMemberDialog } from '@/components/RegisterMemberDialog';
 import { PageCard } from '@/components/PageCard';
 import { Loading } from '@/components/Loading';
 import { useMembers } from '@/hooks/members/useMembers';
@@ -12,10 +13,11 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 function MembersContent() {
-  const { data: members } = useMembers();
+  const { data: members, registerMember, isRegisterProcessing } = useMembers();
 
   return (
     <PageCard
+      action={<RegisterMemberDialog registerMember={registerMember} isRegisterProcessing={isRegisterProcessing} />}
       title={
         <>
           部員
