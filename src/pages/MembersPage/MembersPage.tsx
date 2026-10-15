@@ -1,3 +1,4 @@
+import { DeleteMemberDialog } from '@/components/DeleteMemberDialog';
 import { RegisterMemberDialog } from '@/components/RegisterMemberDialog';
 import { PageCard } from '@/components/PageCard';
 import { Loading } from '@/components/Loading';
@@ -13,7 +14,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 
 function MembersContent() {
-  const { data: members, registerMember, isRegisterProcessing } = useMembers();
+  const { data: members, registerMember, isRegisterProcessing, deleteMember, isDeleteProcessing } = useMembers();
 
   return (
     <PageCard
@@ -53,6 +54,7 @@ function MembersContent() {
               <TableRow>
                 <TableCell>名前</TableCell>
                 <TableCell>メールアドレス</TableCell>
+                <TableCell align="right"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -60,6 +62,13 @@ function MembersContent() {
                 <TableRow hover key={member.id}>
                   <TableCell>{member.name}</TableCell>
                   <TableCell>{member.email}</TableCell>
+                  <TableCell align="right">
+                    <DeleteMemberDialog
+                      member={member}
+                      deleteMember={deleteMember}
+                      isDeleteProcessing={isDeleteProcessing}
+                    />
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

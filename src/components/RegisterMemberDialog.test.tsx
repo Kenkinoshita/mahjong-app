@@ -7,7 +7,11 @@ import { createUser } from '@/services/users/api';
 import { useMembers } from '@/hooks/members/useMembers';
 import { REACT_QUERY_KEY } from '@/consts/reactQueryKey';
 
-vi.mock('@/services/users/api', () => ({ createUser: vi.fn(), fetchUsers: vi.fn().mockResolvedValue([]) }));
+vi.mock('@/services/users/api', () => ({
+  createUser: vi.fn(),
+  deleteUser: vi.fn(),
+  fetchUsers: vi.fn().mockResolvedValue([]),
+}));
 
 function MemberRegistration() {
   const { registerMember, isRegisterProcessing } = useMembers();

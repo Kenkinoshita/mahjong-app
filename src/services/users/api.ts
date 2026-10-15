@@ -4,6 +4,7 @@ import {
   type CreateUserResponse,
 } from '@common/schemas/users/response/createUserResponseSchema';
 import { httpClient } from '@/services/httpClient';
+import { deleteUserRequestSchema } from '@common/schemas/users/request/deleteUserRequestSchema';
 import { getUsersResponseSchema, type GetUsersResponse } from '@common/schemas/users/response/getUsersResponseSchema';
 
 export async function fetchUsers(): Promise<GetUsersResponse> {
@@ -15,4 +16,9 @@ export async function createUser(input: CreateUserRequest): Promise<CreateUserRe
   const body = createUserRequestSchema.parse(input);
   const { data } = await httpClient.post('/users', body);
   return createUserResponseSchema.parse(data);
+}
+
+export async function deleteUser(userId: number): Promise<void> {
+  const { id } = deleteUserRequestSchema.parse({ id: userId });
+  await httpClient.delete(`/users/${id}`);
 }
