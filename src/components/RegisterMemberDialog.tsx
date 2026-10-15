@@ -10,7 +10,11 @@ import TextField from '@mui/material/TextField';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { isAxiosError } from 'axios';
-import { registerMemberSchema, type RegisterMemberFormValues } from '@/schemas/registerMemberSchema';
+import {
+  registerMemberSchema,
+  registerMemberDefaultValues,
+  type RegisterMemberFormValues,
+} from '@/schemas/registerMemberSchema';
 import { useThrowError } from '@/hooks/useThrowError';
 import type { useMembers } from '@/hooks/members/useMembers';
 
@@ -27,7 +31,7 @@ export function RegisterMemberDialog({ registerMember, isRegisterProcessing }: R
     formState: { errors },
   } = useForm<RegisterMemberFormValues>({
     resolver: zodResolver(registerMemberSchema),
-    defaultValues: { name: '', email: '', password: '', passwordConfirm: '' },
+    defaultValues: registerMemberDefaultValues,
   });
   const close = () => {
     if (!isRegisterProcessing) setOpen(false);

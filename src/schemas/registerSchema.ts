@@ -13,3 +13,10 @@ export const registerSchema = z
   });
 
 export type RegisterFormValues = z.infer<typeof registerSchema>;
+
+export const registerDefaultValues: RegisterFormValues = {
+  name: '',
+  email: '',
+  password: '',
+  passwordConfirm: '',
+};

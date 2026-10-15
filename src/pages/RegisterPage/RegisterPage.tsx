@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/auth/useAuth';
-import { registerSchema, type RegisterFormValues } from '@/schemas/registerSchema';
+import { registerSchema, registerDefaultValues, type RegisterFormValues } from '@/schemas/registerSchema';
 
 export function RegisterPage() {
   const { isRegisterProcessing, register } = useAuth();
@@ -23,12 +23,7 @@ export function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      passwordConfirm: '',
-    },
+    defaultValues: registerDefaultValues,
   });
 
   const onSubmit = async ({ name, email, password }: RegisterFormValues) => {

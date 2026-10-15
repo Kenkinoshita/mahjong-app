@@ -4,3 +4,10 @@ import type z from 'zod';
 export const registerMemberSchema = registerSchema;
 
 export type RegisterMemberFormValues = z.infer<typeof registerMemberSchema>;
+
+export const registerMemberDefaultValues: RegisterMemberFormValues = {
+  name: '',
+  email: '',
+  password: '',
+  passwordConfirm: '',
+};

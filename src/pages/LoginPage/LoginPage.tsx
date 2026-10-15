@@ -12,7 +12,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/auth/useAuth';
 import { useThrowError } from '@/hooks/useThrowError';
-import { loginSchema, type LoginFormValues } from '@/schemas/loginSchema';
+import { loginSchema, loginDefaultValues, type LoginFormValues } from '@/schemas/loginSchema';
 
 type LoginLocationState = {
   from?: {
@@ -32,10 +32,7 @@ export function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: loginDefaultValues,
   });
 
   const from = (location.state as LoginLocationState | null)?.from?.pathname ?? '/overall-results';
